@@ -1,59 +1,37 @@
 <!doctype html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Steal a Brainrot - Lucky Block 4D</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <header>
-      <h1>🧠 Steal a Brainrot</h1>
-      <p>
-        Collectionne <strong>1000 brainrots</strong>, vole des points, et visite la boutique de Lucky Blocks
-        tenue par un personnage 4D.
-      </p>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Steal a Brainrot</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
-    <main class="layout">
-      <section class="panel stats">
-        <h2>Ton profil</h2>
-        <p>Niveau: <span id="level">1</span></p>
-        <p>XP: <span id="xp">0</span> / <span id="xpTarget">100</span></p>
-        <p>Pièces: <span id="coins">250</span> 🪙</p>
-        <p>Brainrots collectés: <span id="ownedCount">0</span> / 1000</p>
-        <button id="stealBtn">⚡ Tenter un steal</button>
-      </section>
+<header>
+  <h1>🧠 Steal a Brainrot</h1>
+</header>
 
-      <section class="panel collection">
-        <h2>Top brainrots</h2>
-        <ul id="topList"></ul>
-      </section>
+<main class="layout">
+  <section class="panel stats">
+    <p>Niveau: <span id="level">1</span></p>
+    <p>XP: <span id="xp">0</span> / <span id="xpTarget">100</span></p>
+    <p>Pièces: <span id="coins">250</span></p>
+    <p>Brainrots: <span id="ownedCount">0</span></p>
+    <button id="stealBtn">Steal</button>
+  </section>
 
-      <section class="panel shop">
-        <h2>Boutique Lucky Block</h2>
-        <div class="vendor-wrap">
-          <div class="hypercube" aria-label="Personnage 4D"></div>
-          <p><strong>Néo-Cube</strong> (vendeur 4D) te propose des Lucky Blocks.</p>
-        </div>
+  <ul id="topList"></ul>
 
-        <div class="shop-actions">
-          <button data-cost="50" data-tier="Commun">Lucky Block Commun (50)</button>
-          <button data-cost="150" data-tier="Rare">Lucky Block Rare (150)</button>
-          <button data-cost="400" data-tier="Légendaire">Lucky Block Légendaire (400)</button>
-        </div>
+  <div class="shop-actions">
+    <button data-cost="50" data-tier="Commun">Commun</button>
+    <button data-cost="150" data-tier="Rare">Rare</button>
+    <button data-cost="400" data-tier="Légendaire">Légendaire</button>
+  </div>
 
-        <p id="shopLog" class="log">Bienvenue dans la boutique dimensionnelle.</p>
-      </section>
-    </main>
+  <p id="shopLog"></p>
+</main>
 
-    <template id="brainrotItem">
-      <li>
-        <span class="name"></span>
-        <span class="rarity"></span>
-      </li>
-    </template>
-
-    <script src="app.js"></script>
-  </body>
+<script src="app.js"></script>
+</body>
 </html>
