@@ -1,0 +1,114 @@
+const state = {
+  level: 1,
+  xp: 0,
+  xpTarget: 100,
+  coins: 250,
+  owned: new Set(),
+};
+
+const rarities = ["Commun", "Rare", "Épique", "Légendaire", "Mythique"];
+
+const brainrots = Array.from({ length: 1000 }, (_, i) => {
+  const id = i + 1;
+  const rarity =
+    id % 97 === 0 ? "Mythique" : id % 29 === 0 ? "Légendaire" : id % 11 === 0 ? "Épique" : id % 5 === 0 ? "Rare" : "Commun";
+
+  return {
+    id,
+    name: `Brainrot #${id}`,
+    rarity,
+    power: 10 + (id % 100),
+  };
+});
+
+const $ = (id) => document.getElementById(id);
+const ownedCount = $("ownedCount");
+const xp = $("xp");
+const xpTarget = $("xpTarget");
+const level = $("level");
+const coins = $("coins");
+const topList = $("topList");
+const shopLog = $("shopLog");
+
+function refreshUI() {
+  ownedCount.textContent = state.owned.size;
+  xp.textContent = state.xp;
+  xpTarget.textContent = state.xpTarget;
+  level.textContent = state.level;
+  coins.textContent = state.coins;
+  renderTop();
+}
+
+function renderTop() {
+  const ownedBrainrots = [...state.owned]
+    .map((id) => brainrots[id - 1])
+    .sort((a, b) => b.power - a.power)
+    .slice(0, 15);
+
+  topList.innerHTML = "";
+
+  if (!ownedBrainrots.length) {
+    topList.innerHTML = "<li>Commence par ouvrir un Lucky Block 👀</li>";
+    return;
+  }
+
+  for (const br of ownedBrainrots) {
+    const li = document.createElement("li");
+    li.innerHTML = `<span>${br.name} (${br.power} PWR)</span><span class=\"rarity\">${br.rarity}</span>`;
+    topList.append(li);
+  }
+}
+
+function addXp(amount) {
+  state.xp += amount;
+  while (state.xp >= state.xpTarget) {
+    state.xp -= state.xpTarget;
+    state.level += 1;
+    state.xpTarget = Math.floor(state.xpTarget * 1.2);
+    state.coins += 100;
+    shopLog.textContent = `Niveau ${state.level} atteint ! +100 pièces.`;
+  }
+}
+
+function randomBrainrot(tier = "Commun") {
+  let pool = brainrots;
+  if (tier === "Rare") pool = brainrots.filter((b) => rarities.indexOf(b.rarity) >= 1);
+  if (tier === "Légendaire") pool = brainrots.filter((b) => rarities.indexOf(b.rarity) >= 3);
+
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function openBlock(cost, tier) {
+  if (state.coins < cost) {
+    shopLog.textContent = "Pas assez de pièces pour ce Lucky Block.";
+    return;
+  }
+
+  state.coins -= cost;
+  const br = randomBrainrot(tier);
+  const alreadyOwned = state.owned.has(br.id);
+  state.owned.add(br.id);
+
+  addXp(alreadyOwned ? 8 : 20);
+  shopLog.textContent = alreadyOwned
+    ? `Tu as ré-obtenu ${br.name}. Bonus de fusion +8 XP.`
+    : `Nouveau ! ${br.name} (${br.rarity}) rejoint ta team.`;
+
+  refreshUI();
+}
+
+$("stealBtn").addEventListener("click", () => {
+  const gain = Math.floor(25 + Math.random() * 90) + state.level * 3;
+  state.coins += gain;
+  addXp(10);
+  shopLog.textContent = `Steal réussi: +${gain} pièces.`;
+  refreshUI();
+});
+
+document.querySelectorAll(".shop-actions button").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    openBlock(Number(btn.dataset.cost), btn.dataset.tier);
+  });
+});
+
+refreshUI();
