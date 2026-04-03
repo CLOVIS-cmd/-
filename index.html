@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Steal a Brainrot</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <h1>🧠 Steal a Brainrot</h1>
+</header>
+
+<main class="layout">
+  <section class="panel stats">
+    <p>Niveau: <span id="level">1</span></p>
+    <p>XP: <span id="xp">0</span> / <span id="xpTarget">100</span></p>
+    <p>Pièces: <span id="coins">250</span></p>
+    <p>Brainrots: <span id="ownedCount">0</span></p>
+    <button id="stealBtn">Steal</button>
+  </section>
+
+  <ul id="topList"></ul>
+
+  <div class="shop-actions">
+    <button data-cost="50" data-tier="Commun">Commun</button>
+    <button data-cost="150" data-tier="Rare">Rare</button>
+    <button data-cost="400" data-tier="Légendaire">Légendaire</button>
+  </div>
+
+  <p id="shopLog"></p>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
